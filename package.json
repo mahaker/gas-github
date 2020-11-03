@@ -18,7 +18,7 @@
     "github"
   ],
   "author": "Hideaki Matsunami <carbon0409@gmail.com>",
-  "license": "ISC",
+  "license": "GPLv3",
   "devDependencies": {
     "@types/google-apps-script": "^1.0.17",
     "@types/jest": "^26.0.15",
