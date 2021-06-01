@@ -13,9 +13,9 @@ import { Client } from 'gas-github'
 
 declare let global: any
 
-function openIssue() {
+function createIssue() {
   const client = new Client('org', 'repo','token')
-  const issueNo = client.openIssue({title: 'test', body: 'body', labels: ['bug', 'documentation']})
+  const issueNo = client.createIssue({title: 'test', body: 'body', labels: ['bug', 'documentation']})
 
   Logger.log(`issue created: ${issueNo}`)
 }
