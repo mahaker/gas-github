@@ -1,13 +1,29 @@
 import { Client } from '../src/client'
 
-
-describe('Client#openIssue', () => {
+describe('Client#createIssue', () => {
   beforeEach(() => {
     UrlFetchApp.fetch = jest.fn(() => {
       return {
         getContentText: () => '{"number": 123}'
       } as GoogleAppsScript.URL_Fetch.HTTPResponse
     })
+  })
+
+  test('title does not exist', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+    const body = 'my body'
+    const labels = ['label1', 'label2']
+
+    // action
+    const client = new Client(org, repo, token)
+
+    // assert
+    expect(() => {
+      client.createIssue({body, labels})
+    }).toThrowError('gas-github: createIssue required "title" property.')
   })
 
   test('body and labels exists', () => {
@@ -21,7 +37,7 @@ describe('Client#openIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.openIssue({title, body, labels})
+    const issueNo = client.createIssue({title, body, labels})
 
     // assert
     expect(issueNo).toEqual(123)
@@ -48,7 +64,7 @@ describe('Client#openIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.openIssue({title, labels})
+    const issueNo = client.createIssue({title, labels})
 
     // assert
     expect(issueNo).toEqual(123)
@@ -61,7 +77,7 @@ describe('Client#openIssue', () => {
         'Content-Type': 'application/json',
         'Authorization': `token ${token}`
       },
-      payload: JSON.stringify({title, body: '', labels})
+      payload: JSON.stringify({title, labels})
     })
   })
 
@@ -76,7 +92,7 @@ describe('Client#openIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.openIssue({title, body, labels})
+    const issueNo = client.createIssue({title, body, labels})
 
     // assert
     expect(issueNo).toEqual(123)
@@ -103,7 +119,7 @@ describe('Client#openIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.openIssue({title, body})
+    const issueNo = client.createIssue({title, body})
 
     // assert
     expect(issueNo).toEqual(123)
@@ -116,7 +132,7 @@ describe('Client#openIssue', () => {
         'Content-Type': 'application/json',
         'Authorization': `token ${token}`
       },
-      payload: JSON.stringify({title, body, labels: []})
+      payload: JSON.stringify({title, body})
     })
   })
 
@@ -129,7 +145,7 @@ describe('Client#openIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.openIssue({title})
+    const issueNo = client.createIssue({title})
 
     // assert
     expect(issueNo).toEqual(123)
@@ -142,7 +158,7 @@ describe('Client#openIssue', () => {
         'Content-Type': 'application/json',
         'Authorization': `token ${token}`
       },
-      payload: JSON.stringify({title, body: '', labels: []})
+      payload: JSON.stringify({title})
     })
   })
 })
