@@ -37,10 +37,10 @@ describe('Client#createIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.createIssue({title, body, labels})
+    const r = client.createIssue({title, body, labels})
 
     // assert
-    expect(issueNo).toEqual(123)
+    expect(r.number).toEqual(123)
     expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
     expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/issues`, {
       method: 'post',
@@ -64,10 +64,10 @@ describe('Client#createIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.createIssue({title, labels})
+    const r = client.createIssue({title, labels})
 
     // assert
-    expect(issueNo).toEqual(123)
+    expect(r.number).toEqual(123)
     expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
     expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/issues`, {
       method: 'post',
@@ -92,10 +92,10 @@ describe('Client#createIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.createIssue({title, body, labels})
+    const r = client.createIssue({title, body, labels})
 
     // assert
-    expect(issueNo).toEqual(123)
+    expect(r.number).toEqual(123)
     expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
     expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/issues`, {
       method: 'post',
@@ -119,10 +119,10 @@ describe('Client#createIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.createIssue({title, body})
+    const r = client.createIssue({title, body})
 
     // assert
-    expect(issueNo).toEqual(123)
+    expect(r.number).toEqual(123)
     expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
     expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/issues`, {
       method: 'post',
@@ -145,10 +145,10 @@ describe('Client#createIssue', () => {
 
     // action
     const client = new Client(org, repo, token)
-    const issueNo = client.createIssue({title})
+    const r = client.createIssue({title})
 
     // assert
-    expect(issueNo).toEqual(123)
+    expect(r.number).toEqual(123)
     expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
     expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/issues`, {
       method: 'post',

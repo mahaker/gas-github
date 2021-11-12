@@ -1,3 +1,8 @@
+import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types'
+import { Octokit } from '@octokit/rest'
+
+const octokit = new Octokit()
+
 export class Client {
   constructor(
     readonly org: string,
@@ -9,7 +14,7 @@ export class Client {
    * The properties that can be specified are as follows.
    * https://docs.github.com/en/rest/reference/issues#create-an-issue
    */
-  createIssue(payload: unknown): number {
+  createIssue(payload: unknown): GetResponseDataTypeFromEndpointMethod<typeof octokit.issues.create> {
     /**
      * Verify payload has 'title' property.
      */
@@ -28,6 +33,6 @@ export class Client {
         payload: JSON.stringify(payload)
       }
     )
-    return JSON.parse(response.getContentText()).number
+    return JSON.parse(response.getContentText())
   }
 }
