@@ -20,7 +20,7 @@ function createIssue() {
   Logger.log(`issue created: ${issueNo}`)
 }
 
-global.openIssue = openIssue
+global.createIssue = createIssue
 ```
 
 ### Contribution
