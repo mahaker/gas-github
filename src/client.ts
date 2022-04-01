@@ -1,7 +1,4 @@
-import { GetResponseDataTypeFromEndpointMethod } from '@octokit/types'
-import { Octokit } from '@octokit/rest'
-
-const octokit = new Octokit()
+import { Endpoints } from '@octokit/types'
 
 export class Client {
   constructor(
@@ -14,7 +11,7 @@ export class Client {
    * The properties that can be specified are as follows.
    * https://docs.github.com/en/rest/reference/issues#create-an-issue
    */
-  createIssue(payload: unknown): GetResponseDataTypeFromEndpointMethod<typeof octokit.issues.create> {
+  createIssue(payload: unknown): Endpoints["POST /repos/{owner}/{repo}/issues"]["response"]["data"] {
     /**
      * Verify payload has 'title' property.
      */
@@ -36,7 +33,7 @@ export class Client {
     return JSON.parse(response.getContentText())
   }
 
-  listMilestones(): GetResponseDataTypeFromEndpointMethod<typeof octokit.issues.listMilestones> {
+  listMilestones(): Endpoints["GET /repos/{owner}/{repo}/milestones"]["response"]["data"] {
     const response = UrlFetchApp.fetch(
       `https://api.github.com/repos/${this.org}/${this.repo}/milestones`,
       {
