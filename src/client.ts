@@ -1,5 +1,8 @@
 import { Endpoints } from '@octokit/types'
 
+type Endpoint = keyof Endpoints
+type GetResponseType<K extends Endpoint> = Endpoints[K]["response"]["data"]
+
 export class Client {
   constructor(
     readonly org: string,
@@ -11,7 +14,7 @@ export class Client {
    * The properties that can be specified are as follows.
    * https://docs.github.com/en/rest/reference/issues#create-an-issue
    */
-  createIssue(payload: unknown): Endpoints["POST /repos/{owner}/{repo}/issues"]["response"]["data"] {
+  createIssue(payload: unknown): GetResponseType<"POST /repos/{owner}/{repo}/issues"> {
     /**
      * Verify payload has 'title' property.
      */
@@ -33,7 +36,7 @@ export class Client {
     return JSON.parse(response.getContentText())
   }
 
-  listMilestones(): Endpoints["GET /repos/{owner}/{repo}/milestones"]["response"]["data"] {
+  listMilestones(): GetResponseType<"GET /repos/{owner}/{repo}/milestones"> {
     const response = UrlFetchApp.fetch(
       `https://api.github.com/repos/${this.org}/${this.repo}/milestones`,
       {
