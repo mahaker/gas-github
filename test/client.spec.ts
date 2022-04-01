@@ -9,6 +9,10 @@ describe('Client#createIssue', () => {
     })
   })
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   test('title does not exist', () => {
     // arrange
     const org = 'myorg'
@@ -159,6 +163,40 @@ describe('Client#createIssue', () => {
         'Authorization': `token ${token}`
       },
       payload: JSON.stringify({title})
+    })
+  })
+})
+
+describe('Client#listMilestones', () => {
+  beforeEach(() => {
+    UrlFetchApp.fetch = jest.fn(() => {
+      return {
+        getContentText: () => '[]'
+      } as GoogleAppsScript.URL_Fetch.HTTPResponse
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('get all milestones', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listMilestones()
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/milestones`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
     })
   })
 })

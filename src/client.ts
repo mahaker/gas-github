@@ -35,4 +35,17 @@ export class Client {
     )
     return JSON.parse(response.getContentText())
   }
+
+  listMilestones(): GetResponseDataTypeFromEndpointMethod<typeof octokit.issues.listMilestones> {
+    const response = UrlFetchApp.fetch(
+      `https://api.github.com/repos/${this.org}/${this.repo}/milestones`,
+      {
+        headers: {
+          'User-Agent': 'gas-github',
+          'Authorization': `token ${this.token}`
+        }
+      }
+    )
+    return JSON.parse(response.getContentText())
+  }
 }
