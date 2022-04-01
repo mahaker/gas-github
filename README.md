@@ -23,6 +23,21 @@ function createIssue() {
 global.createIssue = createIssue
 ```
 
+### API
+
+#### createIssue
+
+Create a issue.
+The properties that can be specified are as follows.
+
+ref: https://docs.github.com/en/rest/reference/issues#create-an-issue
+
+#### listMilestones
+
+Get milestones.
+
+ref: https://docs.github.com/en/rest/reference/issues#list-milestones
+
 ### Contribution
 
 Welcome contributions and feedbacks!
