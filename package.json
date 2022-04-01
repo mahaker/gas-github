@@ -1,6 +1,6 @@
 {
   "name": "gas-github",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Github API client for Google Apps Script",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
