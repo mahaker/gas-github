@@ -1,3 +1,4 @@
+import * as http from './http'
 import { Endpoints } from '@octokit/types'
 
 type Endpoint = keyof Endpoints
@@ -20,32 +21,17 @@ export class Client {
      */
     if(!(typeof payload === 'object' && payload !== null && 'title' in payload)) throw new Error('gas-github: createIssue required "title" property.')
 
-    const response = UrlFetchApp.fetch(
-      `https://api.github.com/repos/${this.org}/${this.repo}/issues`,
-      {
-        method: 'post',
-        headers: {
-          'User-Agent': 'gas-github',
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
-          'Authorization': `token ${this.token}`
-        },
-        payload: JSON.stringify(payload)
-      }
+    return http.post(
+      `/repos/${this.org}/${this.repo}/issues`,
+      payload,
+      this.token
     )
-    return JSON.parse(response.getContentText())
   }
 
   listMilestones(): GetResponseType<"GET /repos/{owner}/{repo}/milestones"> {
-    const response = UrlFetchApp.fetch(
-      `https://api.github.com/repos/${this.org}/${this.repo}/milestones`,
-      {
-        headers: {
-          'User-Agent': 'gas-github',
-          'Authorization': `token ${this.token}`
-        }
-      }
+    return http.get(
+      `/repos/${this.org}/${this.repo}/milestones`,
+      this.token
     )
-    return JSON.parse(response.getContentText())
   }
 }
