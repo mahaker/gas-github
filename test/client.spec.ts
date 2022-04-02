@@ -13,7 +13,7 @@ describe('Client#createIssue', () => {
     jest.clearAllMocks()
   })
 
-  test('title does not exist', () => {
+  test('title is empty', () => {
     // arrange
     const org = 'myorg'
     const repo = 'myrepo'
@@ -26,7 +26,7 @@ describe('Client#createIssue', () => {
 
     // assert
     expect(() => {
-      client.createIssue({body, labels})
+      client.createIssue({title: '', body, labels})
     }).toThrowError('gas-github: createIssue required "title" property.')
   })
 
@@ -180,7 +180,7 @@ describe('Client#listMilestones', () => {
     jest.clearAllMocks()
   })
 
-  test('get all milestones', () => {
+  test('no parameter', () => {
     // arrange
     const org = 'myorg'
     const repo = 'myrepo'
@@ -193,6 +193,46 @@ describe('Client#listMilestones', () => {
     // assert
     expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
     expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/milestones`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+
+  test('one parameter', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listMilestones({state: 'all'})
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/milestones?state=all`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+
+  test('two or more parameters', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listMilestones({state: 'all', page: 2})
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/milestones?state=all&page=2`, {
       headers: {
         'User-Agent': 'gas-github',
         'Authorization': `token ${token}`

@@ -3,6 +3,11 @@ import { Endpoints } from '@octokit/types'
 
 type Endpoint = keyof Endpoints
 type GetResponseType<K extends Endpoint> = Endpoints[K]["response"]["data"]
+type GetParameterType<K extends Endpoint> = Omit<Endpoints[K]["parameters"], "accept" | "owner" | "repo">
+
+const urlSearchParams = (parameter: Record<string, unknown>): string => {
+  return Object.entries(parameter).map(p => `${p[0]}=${p[1]}`).join('&')
+}
 
 export class Client {
   constructor(
@@ -11,26 +16,23 @@ export class Client {
     readonly token: string
   ) {}
 
-  /**
-   * The properties that can be specified are as follows.
-   * https://docs.github.com/en/rest/reference/issues#create-an-issue
-   */
-  createIssue(payload: unknown): GetResponseType<"POST /repos/{owner}/{repo}/issues"> {
+  createIssue(parameter: GetParameterType<"POST /repos/{owner}/{repo}/issues">): GetResponseType<"POST /repos/{owner}/{repo}/issues"> {
     /**
      * Verify payload has 'title' property.
      */
-    if(!(typeof payload === 'object' && payload !== null && 'title' in payload)) throw new Error('gas-github: createIssue required "title" property.')
+    if(!parameter.title) throw new Error('gas-github: createIssue required "title" property.')
 
     return http.post(
       `/repos/${this.org}/${this.repo}/issues`,
-      payload,
+      parameter,
       this.token
     )
   }
 
-  listMilestones(): GetResponseType<"GET /repos/{owner}/{repo}/milestones"> {
+  listMilestones(parameter?: GetParameterType<"GET /repos/{owner}/{repo}/milestones">): GetResponseType<"GET /repos/{owner}/{repo}/milestones"> {
+    const params = parameter ? `?${urlSearchParams(parameter)}` : ''
     return http.get(
-      `/repos/${this.org}/${this.repo}/milestones`,
+      `/repos/${this.org}/${this.repo}/milestones${params}`,
       this.token
     )
   }
