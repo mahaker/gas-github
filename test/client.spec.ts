@@ -240,3 +240,77 @@ describe('Client#listMilestones', () => {
     })
   })
 })
+
+describe('Client#listRepositoryProjects', () => {
+  beforeEach(() => {
+    UrlFetchApp.fetch = jest.fn(() => {
+      return {
+        getContentText: () => '[]'
+      } as GoogleAppsScript.URL_Fetch.HTTPResponse
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('no parameter', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listRepositoryProjects()
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/projects`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+
+  test('one parameter', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listRepositoryProjects({state: 'all'})
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/projects?state=all`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+
+  test('two or more parameters', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listRepositoryProjects({state: 'all', page: 2})
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${org}/${repo}/projects?state=all&page=2`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+})

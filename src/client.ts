@@ -36,4 +36,12 @@ export class Client {
       this.token
     )
   }
+
+  listRepositoryProjects(parameter?: GetParameterType<"GET /repos/{owner}/{repo}/projects">): GetResponseType<"GET /repos/{owner}/{repo}/projects"> {
+    const params = parameter ? `?${urlSearchParams(parameter)}` : ''
+    return http.get(
+      `/repos/${this.org}/${this.repo}/projects${params}`,
+      this.token
+    )
+  }
 }
