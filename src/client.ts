@@ -44,4 +44,12 @@ export class Client {
       this.token
     )
   }
+
+  listProjectColumns(projectId: number, parameter?: Omit<GetParameterType<"GET /projects/{project_id}/columns">, 'project_id'>): GetResponseType<"GET /projects/{project_id}/columns"> {
+    const params = parameter ? `?${urlSearchParams(parameter)}` : ''
+    return http.get(
+      `/projects/${projectId}/columns${params}`,
+      this.token
+    )
+  }
 }

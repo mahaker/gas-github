@@ -314,3 +314,80 @@ describe('Client#listRepositoryProjects', () => {
     })
   })
 })
+
+describe('Client#listProjectColumns', () => {
+  beforeEach(() => {
+    UrlFetchApp.fetch = jest.fn(() => {
+      return {
+        getContentText: () => '[]'
+      } as GoogleAppsScript.URL_Fetch.HTTPResponse
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('no parameter', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+    const projectId = 123
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listProjectColumns(projectId)
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/projects/${projectId}/columns`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+
+  test('one parameter', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+    const projectId = 123
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listProjectColumns(projectId, {per_page: 1})
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/projects/${projectId}/columns?per_page=1`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+
+  test('two or more parameters', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+    const projectId = 123
+
+    // action
+    const client = new Client(org, repo, token)
+    client.listProjectColumns(projectId, {per_page: 1, page: 2})
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/projects/${projectId}/columns?per_page=1&page=2`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${token}`
+      }
+    })
+  })
+})
