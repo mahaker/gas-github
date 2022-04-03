@@ -38,6 +38,24 @@ Get milestones.
 
 ref: https://docs.github.com/en/rest/reference/issues#list-milestones
 
+#### listRepositoryProjects
+
+Get repository projects.
+
+ref: https://docs.github.com/en/rest/reference/projects#list-repository-projects
+
+#### listProjectColumns
+
+Get project columns.
+
+ref: https://docs.github.com/en/rest/reference/projects#list-project-columns
+
+#### addProjectCardFromIssue
+
+Add prject card from issue.
+
+ref: https://docs.github.com/en/rest/reference/projects#create-a-project-card
+
 ### Contribution
 
 Welcome contributions and feedbacks!
