@@ -2,6 +2,7 @@
   "name": "gas-github",
   "version": "0.0.8",
   "description": "Github API client for Google Apps Script",
+  "repository": "https://github.com/mahaker/gas-github",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
