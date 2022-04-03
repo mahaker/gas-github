@@ -391,3 +391,47 @@ describe('Client#listProjectColumns', () => {
     })
   })
 })
+
+describe('Client#addProjectCardFromIssue', () => {
+  beforeEach(() => {
+    UrlFetchApp.fetch = jest.fn(() => {
+      return {
+        getContentText: () => '{}'
+      } as GoogleAppsScript.URL_Fetch.HTTPResponse
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('', () => {
+    // arrange
+    const org = 'myorg'
+    const repo = 'myrepo'
+    const token = 'mytoken'
+    const columnId = 123
+    const issueId = 345
+
+    // action
+    const client = new Client(org, repo, token)
+    client.addProjectCardFromIssue(columnId, issueId)
+
+    // assert
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/projects/columns/${columnId}/cards`, {
+      method: 'post',
+      headers: {
+        'User-Agent': 'gas-github',
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+        'Authorization': `token ${token}`
+      },
+      payload: JSON.stringify({
+        note: null,
+        content_id: issueId,
+        content_type: 'Issue'
+      })
+    })
+  })
+})

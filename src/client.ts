@@ -52,4 +52,16 @@ export class Client {
       this.token
     )
   }
+
+  addProjectCardFromIssue(columnId: number, issueId: number): GetResponseType<"POST /projects/columns/{column_id}/cards"> {
+    return http.post(
+      `/projects/columns/${columnId}/cards`,
+      {
+        note: null,
+        content_id: issueId,
+        content_type: 'Issue'
+      },
+      this.token
+    )
+  }
 }
