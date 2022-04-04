@@ -1,17 +1,17 @@
 import * as http from './http'
 import type * as types from './types'
 
-const listRepositoryProjects = (setting: types.GITHUB_SETTING, parameter?: types.GetParameterType<"GET /repos/{owner}/{repo}/projects">): types.GetResponseType<"GET /repos/{owner}/{repo}/projects"> => {
+const listRepositoryProjects = <E extends "GET /repos/{owner}/{repo}/projects">(setting: types.GITHUB_SETTING, parameter?: types.GetParameterType<E>): types.GetResponseType<E> => {
   const params = parameter ? `?${http.urlSearchParams(parameter)}` : ''
   return http.get(`/repos/${setting.owner}/${setting.repo}/projects${params}`, setting.pat)
 }
 
-const listProjectColumns = (setting: types.GITHUB_SETTING, projectId: number, parameter?: Omit<types.GetParameterType<"GET /projects/{project_id}/columns">, 'project_id'>): types.GetResponseType<"GET /projects/{project_id}/columns"> => {
+const listProjectColumns = <E extends "GET /projects/{project_id}/columns">(setting: types.GITHUB_SETTING, projectId: number, parameter?: Omit<types.GetParameterType<E>, 'project_id'>): types.GetResponseType<E> => {
   const params = parameter ? `?${http.urlSearchParams(parameter)}` : ''
   return http.get(`/projects/${projectId}/columns${params}`, setting.pat)
 }
 
-const addProjectCardFromIssue = (setting: types.GITHUB_SETTING, columnId: number, issueId: number): types.GetResponseType<"POST /projects/columns/{column_id}/cards"> => {
+const addProjectCardFromIssue = <E extends "POST /projects/columns/{column_id}/cards">(setting: types.GITHUB_SETTING, columnId: number, issueId: number): types.GetResponseType<E> => {
   return http.post(`/projects/columns/${columnId}/cards`,
     {
       note: null,
