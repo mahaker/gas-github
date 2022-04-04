@@ -1,6 +1,10 @@
 const GITHUB_HOST = 'https://api.github.com'
 const USER_AGENT = 'gas-github'
 
+const urlSearchParams = (parameter: Record<string, unknown>): string => {
+  return Object.entries(parameter).map(p => `${p[0]}=${p[1]}`).join('&')
+}
+
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const get = (url: string, token: string): any => {
   const response = UrlFetchApp.fetch(
@@ -33,4 +37,4 @@ const post = (url: string, payload: unknown, token: string): any => {
   return JSON.parse(response.getContentText())
 }
 
-export { get, post }
+export { urlSearchParams, get, post }

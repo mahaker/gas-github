@@ -1,1 +1,2 @@
-export { Client } from './client'
+export * from './issues'
+export * from './projects'
