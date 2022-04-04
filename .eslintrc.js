@@ -6,6 +6,9 @@ module.exports = {
         'eslint:recommended',
         'plugin:@typescript-eslint/recommended'
     ],
+    rules: {
+        quotes: ["error", "single"]
+    },
     ignorePatterns: ['**/*.js'],
     overrides: [
         {
