@@ -10,4 +10,9 @@ const listMilestones = <E extends 'GET /repos/{owner}/{repo}/milestones'>(settin
   return http.get(`/repos/${setting.owner}/${setting.repo}/milestones${params}`, setting.pat)
 }
 
-export { createIssue, listMilestones }
+const listRepositoryIssues = <E extends 'GET /repos/{owner}/{repo}/issues'>(setting: types.GITHUB_SETTING, parameter?: types.GetParameterType<E>): types.GetResponseType<E> => {
+  const params = parameter ? `?${http.urlSearchParams(parameter)}` : ''
+  return http.get(`/repos/${setting.owner}/${setting.repo}/issues${params}`, setting.pat)
+}
+
+export { createIssue, listMilestones, listRepositoryIssues }
