@@ -31,6 +31,8 @@ global.postIssue = postIssue
 
 1. createIssue
    - ref: https://docs.github.com/en/rest/reference/issues#create-an-issue
+1. getIssue
+   - ref: https://docs.github.com/en/rest/reference/issues#get-an-issue
 1. listMilestones
    - ref: https://docs.github.com/en/rest/reference/issues#list-milestones
 1. listRepositoryIssues

@@ -44,6 +44,38 @@ describe('createIssue', () => {
   })
 })
 
+describe('getIssue', () => {
+  beforeEach(() => {
+    UrlFetchApp.fetch = jest.fn(() => {
+      return {
+        getContentText: () => '{"number": 123}'
+      } as GoogleAppsScript.URL_Fetch.HTTPResponse
+    })
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  test('correct', () => {
+    // arrange
+    const issueNumber = 123
+
+    // action
+    const r = issues.getIssue(setting, issueNumber)
+
+    // assert
+    expect(r.number).toEqual(123)
+    expect(UrlFetchApp.fetch).toHaveBeenCalledTimes(1)
+    expect(UrlFetchApp.fetch).toHaveBeenLastCalledWith(`https://api.github.com/repos/${setting.owner}/${setting.repo}/issues/${issueNumber}`, {
+      headers: {
+        'User-Agent': 'gas-github',
+        'Authorization': `token ${setting.pat}`
+      }
+    })
+  })
+})
+
 describe('listMilestones', () => {
   beforeEach(() => {
     UrlFetchApp.fetch = jest.fn(() => {
